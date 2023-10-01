@@ -1,0 +1,27 @@
+/* Fuente externa */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;500&display=swap');
+
+/*----------------------------------------------------------------------------*/
+/* Normalización */
+*,
+*::before,
+*::after {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%; /* 1em = 10px */
+	font-family: 'Roboto Slab', serif;
+	color: #2b2b2b;
+}
+
+ul, ol {
+	list-style-type: none;
+}
+
+/*----------------------------------------------------------------------------*/
+.item-container {
+	display: flex;
+}
