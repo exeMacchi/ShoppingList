@@ -71,11 +71,12 @@ function createNewItem(text) {
  * @param {String} text input.value
  */
 function createArticle(text) {
+    const article = document.createElement("article");
     const checkbox = createCheckbox();
     const p = createParagraph(text);
-    const deleteButton = createDeleteButton();
+    const deleteButton = createDeleteButton(article);
 
-    const article = document.createElement("article");
+
     article.appendChild(checkbox);
     article.appendChild(p);
     article.appendChild(deleteButton);
@@ -107,12 +108,20 @@ function createParagraph(text) {
 
 /**
  * Crear y devolver el botón que permite eliminar el item de la lista.
+ * @param {HTMLElement} article - Artículo
  * @returns {HTMLButtonElement} Delete Button
  */
-function createDeleteButton() {
+function createDeleteButton(article) {
     const deleteButton = document.createElement("button");
     deleteButton.setAttribute("type", "button");
     deleteButton.textContent = "Delete";
+
+    // Cuando se haga click en el botón "Delete", se eliminará el artículo
+    // referenciado.
+    deleteButton.addEventListener("click", function() {
+        article.parentElement.removeChild(article);
+    });
+
     return deleteButton;
 }
 
