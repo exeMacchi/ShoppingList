@@ -5,7 +5,7 @@
 window.onload = function() {
     const newItemInput = document.querySelector("input");
     const addButton = document.querySelector("#add-item");
-    let itemList  = document.querySelector("#item-list");
+    const itemList  = document.querySelector("#item-list");
     const resetButton = document.querySelector("#reset-items");
 
     addButton.disabled = true;
@@ -29,14 +29,12 @@ window.onload = function() {
 
     addButton.addEventListener("click", function() {
         addItem(itemList, newItemInput, addButton);
+        newItemInput.focus();
     });
 
     // Resetear la lista de items.
     resetButton.addEventListener("click", function() {
-        resetItemList(itemList);
-        // Después de borrar la lista original, se obtiene la referencia de
-        // la nueva lista.
-        itemList = document.querySelector("#item-list");
+        resetItemList(itemList, newItemInput);
     });
 }
 
@@ -127,16 +125,12 @@ function createDeleteButton(article) {
 
 /*----------------------------------------------------------------------------*/
 /**
- * Resetear la lista de items borrando la lista actual y creando una nueva vacía
- * en su posición anterior.
+ * Resetear la lista de items borrando todos los artículos, luego se focusea 
+ * el campo de texto.
  * @param {HTMLElement} itemList Original item list
+ * @param {HTMLInputElement} input newItemInput
  */
-function resetItemList(itemList) {
-    const newItemList = itemList.cloneNode();
-
-    const main = document.querySelector("main");
-    main.removeChild(itemList);
-
-    const resetSection = document.querySelector("#reset-button");
-    main.insertBefore(newItemList, resetSection);
+function resetItemList(itemList, input) {
+    itemList.replaceChildren();
+    input.focus();
 }
