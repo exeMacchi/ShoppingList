@@ -7,22 +7,27 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <header>
-            <h1>My shopping list</h1>
-        </header>
-        <main>
-            <section> <!-- Add new item -->
-                <input id="newItem" type="text" placeholder="New item...">
-                <button id="add-item" type="button">Add item</button>
-            </section>
+        <div class="global-container">
+            <main class="main-container">
+                <h1>My shopping list</h1>
 
-            <section id="item-list"> <!-- List of items -->
-            </section>
+                <section id="new-item"> <!-- Add new item -->
+                    <input id="newItem" 
+                           type="text" 
+                           placeholder="New item..."
+                           maxlength="32">
+                    <button id="add-item" type="button">Add item</button>
+                </section>
 
-            <section id="reset-button"> <!-- Reset button -->
-                <button id="reset-items" type="button">Reset</button>
-            </section>
-        </main>
+                <section id="item-list"> <!-- List of items -->
+                </section>
+
+                <section id="reset-button"> <!-- Reset button -->
+                    <input type="text">
+                    <button id="reset-items" type="button">Reset</button>
+                </section>
+            </main>
+        </div>
 
         <script src="script.js"></script>
     </body>

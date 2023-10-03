@@ -3,12 +3,14 @@
  * Cargar los events handlers
  */
 window.onload = function() {
-    const newItemInput = document.querySelector("input");
+    const newItemInput = document.querySelector("#newItem");
     const addButton = document.querySelector("#add-item");
     const itemList  = document.querySelector("#item-list");
     const resetButton = document.querySelector("#reset-items");
 
+    // Los botones se deshabilitan
     addButton.disabled = true;
+    resetButton.disabled = true;
 
     // Habilitar o no el botón 'Add item' dependiendo si el input tiene o no texto.
     newItemInput.addEventListener("input", function() {
@@ -23,44 +25,47 @@ window.onload = function() {
     // Agregar un item
     newItemInput.addEventListener("keypress", function(e) {
         if (e.key === "Enter") {
-            addItem(itemList, newItemInput, addButton);
+            addItem(itemList, newItemInput, addButton, resetButton);
         }
     });
 
     addButton.addEventListener("click", function() {
-        addItem(itemList, newItemInput, addButton);
+        addItem(itemList, newItemInput, addButton, resetButton);
         newItemInput.focus();
     });
 
     // Resetear la lista de items.
     resetButton.addEventListener("click", function() {
         resetItemList(itemList, newItemInput);
+        resetButton.disabled = true;
     });
 }
 
 /*----------------------------------------------------------------------------*/
-function addItem(itemList, input, button) {
+/**
+ * Crear y añadir un item a la lista de items.
+ * @param {HTMLElement} itemList 
+ * @param {HTMLInputElement} input 
+ * @param {HTMLButtonElement} button 
+ * @param {HTMLButtonElement} reset 
+ */
+function addItem(itemList, input, button, reset) {
     if (input.value !== "") {
         // Crear el nuevo item.
-        const newItem = createNewItem(input.value);
+        const newItem = createArticle(input.value);
 
         // Agregar el nuevo item.
         itemList.appendChild(newItem);
 
-        // Resetear sección 'Add new item'
+        // Resetear sección 'Add new item' y habilitar el botón de reinicio.
         input.value = "";
         button.disabled = true;
+        reset.disabled = false;
     }
     else {
         // Mostrar un mensaje en pantalla que no se puede ingresar un item vacío.
-        alert("An empty item cannot be added.")
+        alert("An empty item cannot be added.");
     }
-}
-
-
-function createNewItem(text) {
-    const article = createArticle(text);
-    return article;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +84,7 @@ function createArticle(text) {
     article.appendChild(p);
     article.appendChild(deleteButton);
 
-    article.classList.add("item-container");
+    article.classList.add("item-container"); // display: flex;
 
     return article;
 }
@@ -91,6 +96,24 @@ function createArticle(text) {
 function createCheckbox() {
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
+    checkbox.addEventListener("change", function() {
+        const container = checkbox.parentElement;
+        const uncheckedColor = getComputedStyle(document.documentElement).getPropertyValue("--tertiary-bg-color");
+        const checkedColor = getComputedStyle(document.documentElement).getPropertyValue("--tertiary-color");
+        const p = checkbox.nextElementSibling;
+
+        // Aplicar estilos al <article> si el checkbox está seleccionado o no.
+        if (checkbox.checked) {
+            container.style.backgroundColor = checkedColor;
+            p.style.textDecoration = "line-through";
+            p.style.color = "gray";
+        }
+        else {
+            container.style.backgroundColor = uncheckedColor;
+            p.style.textDecoration = "none";
+            p.style.color = "inherit";
+        }
+    })
     return checkbox;
 }
 
@@ -118,6 +141,7 @@ function createDeleteButton(article) {
     // referenciado.
     deleteButton.addEventListener("click", function() {
         article.parentElement.removeChild(article);
+        verifyItemList();
     });
 
     return deleteButton;
@@ -133,4 +157,20 @@ function createDeleteButton(article) {
 function resetItemList(itemList, input) {
     itemList.replaceChildren();
     input.focus();
+}
+
+/**
+ * Verificar si la lista de items está vacía o no, si lo está, se deshabilita
+ * el botón de reinicio; si no lo está, el botón está habilitado.
+ */
+function verifyItemList() {
+    const itemList = document.querySelector("#item-list");
+    const resetButton = document.querySelector("#reset-items");
+
+    if (itemList.children.length === 0) {
+        resetButton.disabled = true;
+    }
+    else {
+        resetButton.disabled = false;
+    }
 }
